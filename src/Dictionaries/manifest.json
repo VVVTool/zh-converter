@@ -1,0 +1,62 @@
+{
+  "name": "tongwen-dict",
+  "version": "1.0.2",
+  "dicts": [
+    {
+      "direction": "s2t",
+      "type": "char",
+      "min": false,
+      "filename": "s2t-char.json",
+      "md5": "a0bfc406029b3647f59e8b050efa6006"
+    },
+    {
+      "direction": "s2t",
+      "type": "char",
+      "min": true,
+      "filename": "s2t-char.min.json",
+      "md5": "f17288546928bb0813c20eb636acab26"
+    },
+    {
+      "direction": "t2s",
+      "type": "char",
+      "min": false,
+      "filename": "t2s-char.json",
+      "md5": "c23f919adac66a95165b65a8168bec59"
+    },
+    {
+      "direction": "t2s",
+      "type": "char",
+      "min": true,
+      "filename": "t2s-char.min.json",
+      "md5": "30ca32ab76e8b78b2301d10c7e21b241"
+    },
+    {
+      "direction": "s2t",
+      "type": "phrase",
+      "min": false,
+      "filename": "s2t-phrase.json",
+      "md5": "d3320c5ad7e1662cf197afa8e8173cdf"
+    },
+    {
+      "direction": "s2t",
+      "type": "phrase",
+      "min": true,
+      "filename": "s2t-phrase.min.json",
+      "md5": "e430e4a94b956fc93a8d213ffade7eee"
+    },
+    {
+      "direction": "t2s",
+      "type": "phrase",
+      "min": false,
+      "filename": "t2s-phrase.json",
+      "md5": "e7b15da9ee61381bc3c2101a7f4de5bb"
+    },
+    {
+      "direction": "t2s",
+      "type": "phrase",
+      "min": true,
+      "filename": "t2s-phrase.min.json",
+      "md5": "fa1d7b91f95082cffc30e4a850b631ab"
+    }
+  ]
+}

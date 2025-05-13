@@ -1,0 +1,17 @@
+{
+  "name": "vvvtool/zh-converter",
+  "description": "PHP中文繁简体字转换程序，为简体中文与繁体中文之间的转换提供了一种简单高效的解决方案。A PHP package for converting between simplified and traditional Chinese characters.",
+  "version": "1.0.0",
+  "type": "library",
+  "require": {
+    "php": ">=7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "VVVTool\\ZhConverter\\": "src/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.1||>=9.0"
+  }
+}
