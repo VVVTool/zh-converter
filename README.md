@@ -27,24 +27,6 @@ require 'vendor/autoload.php';
 
 use VVVTool\ZhConverter\ZhConverter;
 
-$converter = new ZhConverter();
-
-// Convert to Traditional Chinese
-$traditional = $converter->toTraditional('简体字');
-
-// Convert to Simplified Chinese
-$simplified = $converter->toSimplified('繁體字');
-```
-
-## Laravel Integration
-
-If you're using Laravel, you can use the Facade for more convenient access:
-
-如果您在使用 Laravel，可以通过 Facade 实现更便捷的访问：
-
-```php
-use VVVTool\ZhConverter\Facades\ZhConverter;
-
 // Convert to Traditional Chinese
 $traditional = ZhConverter::toTraditional('简体字');
 

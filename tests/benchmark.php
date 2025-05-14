@@ -5,9 +5,8 @@ require __DIR__ . '/../vendor/autoload.php';
 use VVVTool\ZhConverter\ZhConverter;
 
 $start = microtime(true);
-$converter = new ZhConverter();
 
-echo $converter->toTraditional('
+echo ZhConverter::toTraditional('
 红楼梦 · 第一回 · 甄士隐梦幻识通灵 贾雨村风尘怀闺秀
 清 · 曹雪芹
 此开卷第一回也。作者自云：因曾历过一番梦幻之后，故将真事隐去，而借「通灵」之说，撰此《石头记》一书也。故曰「甄士隐」云云。但书中所记何事何人？自又云：「今风尘碌碌，一事无成，忽念及当日所有之女子，一一细考较去，觉其行止见识皆出于我之上。何我堂堂须眉，诚不若彼裙钗哉？实愧则有馀，悔又无益之大无可如何之日也！当此，则自欲将已往所赖天恩祖德，锦衣纨袴之时，饫甘餍肥之日，背父兄教育之恩，负师友规训之德，以至今日一技无成，半生潦倒之罪，编述一集，以告天下人：我之罪固不免，然闺阁中本自历历有人，万不可因我之不肖，自护己短，一并使其泯灭也。虽今日之茅椽蓬牖，瓦灶绳床，其晨夕风露，阶柳庭花，亦未有妨我之襟怀笔墨者。虽我未学，下笔无文，又何妨用假语村言，敷演出一段故事来，亦可使闺阁昭传，复可悦世之目，破人愁闷，不亦宜乎？」故曰「贾雨村云云。
@@ -83,7 +82,7 @@ $middle = microtime(true);
 
 echo "\n\n";
 
-echo $converter->toSimplified('
+echo ZhConverter::toSimplified('
 乾綱
 紅樓夢 · 第一回 · 甄士隱夢幻識通靈 賈雨村風塵懷閨秀
 清 · 曹雪芹

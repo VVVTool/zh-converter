@@ -9,37 +9,38 @@ class ZhConverter
     /**
      * @var DictionaryLoader
      */
-    private $loader;
+    private static $loader;
 
-
-    public function __construct(?string $dictionaryDir = null)
+    private static function init(?string $dictionaryDir = null)
     {
-        $this->loader = new DictionaryLoader($dictionaryDir);
+        self::$loader = new DictionaryLoader($dictionaryDir);
     }
 
     /**
      * Convert Simplified Chinese to Traditional Chinese
      */
-    public function toTraditional(string $text): string
+    public static function toTraditional(string $text): string
     {
-        $dictionaries = $this->loader->load('s2t');
+        self::init();
+        $dictionaries = self::$loader->load('s2t');
 
-        return $this->convert($text, $dictionaries);
+        return self::convert($text, $dictionaries);
     }
 
     /**
      * Convert Traditional Chinese to Simplified Chinese
      */
-    public function toSimplified(string $text): string
+    public static function toSimplified(string $text): string
     {
-        $dictionaries = $this->loader->load('t2s');
-        return $this->convert($text, $dictionaries);
+        self::init();
+        $dictionaries = self::$loader->load('t2s');
+        return self::convert($text, $dictionaries);
     }
 
     /**
      * Core conversion logic
      */
-    private function convert(string $text, $dictionaries): string
+    private static function convert(string $text, $dictionaries): string
     {
         if (empty($text)) {
             return '';
@@ -89,8 +90,8 @@ class ZhConverter
     /**
      * Set custom dictionary directory
      */
-    public function setDictionaryDir(string $path): void
+    public static function setDictionaryDir(string $path): void
     {
-        $this->loader->setDictionaryDir($path);
+        self::$loader->setDictionaryDir($path);
     }
 }

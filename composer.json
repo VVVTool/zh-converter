@@ -5,8 +5,7 @@
 	"type": "library",
 	"license": "MIT",
 	"require": {
-		"php": "^7.1 || >=8.0",
-		"illuminate/support": "^5.8 || ^6.20 || ^7.20 || ^8.19 || ^9.0 || ^10.0 || ^11.0 || ^12.0"
+		"php": "^7.1 || >=8.0"
 	},
 	"autoload": {
 		"psr-4": {
@@ -15,15 +14,5 @@
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^7.1 || ^8.5.21  ||^9.3 || ^10.1 || ^11.0.10 || ^12.1.5"
-	},
-	"extra": {
-		"laravel": {
-			"providers": [
-				"VVVTool\\ZhConverter\\ZhConverterServiceProvider"
-			],
-			"aliases": {
-				"Converter": "VVVTool\\ZhConverter\\Facades\\ZhConverter"
-			}
-		}
 	}
 }
