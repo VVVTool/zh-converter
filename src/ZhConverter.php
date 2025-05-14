@@ -11,13 +11,6 @@ class ZhConverter
      */
     private $loader;
 
-    /**
-     * @var array
-     */
-    private $config = [
-        'convertToTraditional' => true,
-        'convertToSimplified' => true,
-    ];
 
     public function __construct(?string $dictionaryDir = null)
     {
@@ -29,13 +22,6 @@ class ZhConverter
      */
     public function toTraditional(string $text): string
     {
-        if (is_null($text)) {
-            throw new \InvalidArgumentException("Input text cannot be null");
-        }
-        if (!$this->config['convertToTraditional']) {
-            return $text;
-        }
-
         $dictionaries = $this->loader->load('s2t');
 
         return $this->convert($text, $dictionaries);
@@ -46,10 +32,6 @@ class ZhConverter
      */
     public function toSimplified(string $text): string
     {
-        if (!$this->config['convertToSimplified']) {
-            return $text;
-        }
-
         $dictionaries = $this->loader->load('t2s');
         return $this->convert($text, $dictionaries);
     }
@@ -102,14 +84,6 @@ class ZhConverter
         }
 
         return $result;
-    }
-
-    /**
-     * Configure converter options
-     */
-    public function configure(array $options): void
-    {
-        $this->config = array_merge($this->config, $options);
     }
 
     /**

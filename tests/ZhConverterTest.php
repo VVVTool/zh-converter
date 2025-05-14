@@ -18,6 +18,7 @@ class ZhConverterTest extends TestCase
         $this->assertEquals('中文', $this->converter->toTraditional('中文'));
         $this->assertEquals('乾綱', $this->converter->toTraditional('乾纲'));
         $this->assertEquals('入口網站', $this->converter->toTraditional('门户网站'));
+        $this->assertEquals('入口網站', $this->converter->toTraditional('入口網站'));
     }
 
     public function testConvertToSimplified()
@@ -26,5 +27,6 @@ class ZhConverterTest extends TestCase
         $this->assertEquals('中文', $this->converter->toSimplified('中文'));
         $this->assertEquals('乾纲', $this->converter->toSimplified('乾綱'));
         $this->assertEquals('门户网站', $this->converter->toSimplified('入口網站'));
+        $this->assertEquals('门户网站', $this->converter->toSimplified('门户网站'));
     }
 }
