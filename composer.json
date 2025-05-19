@@ -1,6 +1,6 @@
 {
 	"name": "vvvtool/zh-converter",
-	"description": "PHP中文繁简体字转换程序，为简体中文与繁体中文之间的转换提供了一种简单高效的解决方案。A PHP package for converting between simplified and traditional Chinese characters.",
+	"description": "PHP 中文繁简转换工具，支持简体中文、繁体中文、台湾繁体、香港繁体之间的互相转换，提供简单高效的中文字符转换解决方案。A PHP package for converting between simplified and traditional Chinese characters.",
 	"version": "1.1.0",
 	"type": "library",
 	"license": "MIT",
