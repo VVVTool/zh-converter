@@ -2,96 +2,121 @@
 
 namespace VVVTool\ZhConverter;
 
-use VVVTool\ZhConverter\Core\DictionaryLoader;
-
 class ZhConverter
 {
-    /**
-     * @var DictionaryLoader
-     */
-    private static $loader;
+    private static $dictionaries = [];
+    private static $isLoaded = false;
+    private static $maxLen = 20; // 最大词组长度
 
-    private static function init(?string $dictionaryDir = null)
+    private static function loadDictionary(string $name): array
     {
-        self::$loader = new DictionaryLoader($dictionaryDir);
+        $dictFile = __DIR__ . "/../dicts/{$name}.json";
+
+        return self::loadJsonFile($dictFile);
     }
 
-    /**
-     * Convert Simplified Chinese to Traditional Chinese
-     */
-    public static function toTraditional(string $text): string
+    private static function loadJsonFile(string $file): array
     {
-        self::init();
-        $dictionaries = self::$loader->load('s2t');
+        if (!file_exists($file)) {
+            return [];
+        }
 
-        return self::convert($text, $dictionaries);
+        $dict = json_decode(file_get_contents($file), true) ?: [];
+
+        // 更新最大长度
+        if (!empty($dict)) {
+            $maxKeyLength = max(array_map('mb_strlen', array_keys($dict)));
+            self::$maxLen = max(self::$maxLen, $maxKeyLength);
+        }
+
+        return $dict;
     }
 
-    /**
-     * Convert Traditional Chinese to Simplified Chinese
-     */
-    public static function toSimplified(string $text): string
-    {
-        self::init();
-        $dictionaries = self::$loader->load('t2s');
-        return self::convert($text, $dictionaries);
-    }
-
-    /**
-     * Core conversion logic
-     */
-    private static function convert(string $text, $dictionaries): string
+    public static function convert(string $text, array $dictionary): string
     {
         if (empty($text)) {
             return '';
         }
 
-        // First convert phrases
-        $phrases = $dictionaries['phrase']->getAllPhrases();
-        usort($phrases, function ($a, $b) {
-            return mb_strlen($b, 'UTF-8') - mb_strlen($a, 'UTF-8');
-        });
+        $result = '';
+        $buffer = '';
+        $chars = preg_split('//u', $text, -1, PREG_SPLIT_NO_EMPTY);
+        $totalLen = count($chars);
 
-        // 使用一个特殊的标记来保护已替换的短语
-        $replacedSegments = [];
-        $marker = "\u{FFFF}"; // 使用实际的 Unicode 字符而不是字符串表示
-        $counter = 0;
+        $i = 0;
 
-        foreach ($phrases as $phrase) {
-            // 先检查文本中是否存在该短语
-            if (strpos($text, $phrase) !== false) {
-                $replacement = $dictionaries['phrase']->getTranslation($phrase);
-                if ($replacement) {
-                    $placeholder = $marker . $counter . $marker;
-                    $replacedSegments[$placeholder] = $replacement;
-                    $text = str_replace($phrase, $placeholder, $text);
-                    $counter++;
+        while ($i < $totalLen) {
+            // 填充缓冲区
+            $buffer = '';
+            $j = 0;
+            while ($j < self::$maxLen && ($i + $j) < $totalLen) {
+                $buffer .= $chars[$i + $j];
+                $j++;
+            }
+
+            // 尝试最长匹配
+            $matched = false;
+            $bufferLen = mb_strlen($buffer);
+
+            for ($len = $bufferLen; $len > 0; $len--) {
+                $slice = mb_substr($buffer, 0, $len);
+                if (isset($dictionary[$slice])) {
+                    $result .= $dictionary[$slice];
+                    $i += $len;
+                    $matched = true;
+                    break;
                 }
             }
-        }
 
-        // Then convert individual characters, but only for non-replaced segments
-        $pattern = '/' . preg_quote($marker) . '\d+' . preg_quote($marker) . '|./u';
-        preg_match_all($pattern, $text, $matches);
-
-        $result = '';
-        foreach ($matches[0] as $segment) {
-            if (isset($replacedSegments[$segment])) {
-                $result .= $replacedSegments[$segment];
-            } else {
-                $replacement = $dictionaries['char']->getTranslation($segment);
-                $result .= $replacement ?: $segment;
+            // 如果没有匹配到，则转换单字
+            if (!$matched) {
+                $char = $chars[$i];
+                $result .= $dictionary[$char] ?? $char;
+                $i++;
             }
         }
 
         return $result;
     }
 
-    /**
-     * Set custom dictionary directory
-     */
-    public static function setDictionaryDir(string $path): void
+    public static function s2t(string $text): string
     {
-        self::$loader->setDictionaryDir($path);
+        $dictionariy = self::loadDictionary('s2t');
+        $result = self::convert($text, $dictionariy);
+        return $result;
+    }
+
+    public static function t2s(string $text): string
+    {
+        $dictionariy = self::loadDictionary('t2s');
+        return self::convert($text, $dictionariy);
+    }
+
+    public static function s2tw(string $text): string
+    {
+        $dictionariy = self::loadDictionary('t2tw');
+        $traditional = self::s2t($text);
+        return self::convert($traditional, $dictionariy);
+    }
+
+    public static function s2hk(string $text): string
+    {
+        $dictionariy = self::loadDictionary('t2hk');
+        $traditional = self::s2t($text);
+        return self::convert($traditional, $dictionariy);
+    }
+
+    public static function tw2s(string $text): string
+    {
+        $dictionariy = array_flip(self::loadDictionary('t2tw'));
+        $traditional = self::convert($text, $dictionariy);
+        return self::t2s($traditional);
+    }
+
+    public static function hk2s(string $text): string
+    {
+        $dictionariy = array_flip(self::loadDictionary('t2hk'));
+        $traditional = self::convert($text, $dictionariy);
+        return self::t2s($traditional);
     }
 }
